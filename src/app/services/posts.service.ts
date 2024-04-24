@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { Post } from '../types/post';
-import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, delay, map, switchMap, tap } from 'rxjs/operators';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
+import { HttpClient } from '@angular/common/http';
 
 interface SearchResult {
   posts: Post[];
@@ -54,7 +55,7 @@ export class PostsService {
     sortDirection: '',
   };
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this._search$
       .pipe(
         tap(() => this._loading$.next(true)),
@@ -114,15 +115,14 @@ export class PostsService {
   private _search(): Observable<SearchResult> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
-    // 1. sort
-    let posts = sort([], sortColumn, sortDirection);
+    return this.http.get<Post[]>('https://jsonplaceholder.typicode.com/posts').pipe(
+      map((posts) => {
+        const result = sort(posts, sortColumn, sortDirection)
+          .filter((post) => matches(post, searchTerm))
+          .slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
 
-    // 2. filter
-    posts = posts.filter((post) => matches(post, searchTerm));
-    const total = posts.length;
-
-    // 3. paginate
-    posts = posts.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return of({ posts, total });
+        return { posts: result, total: result.length };
+      })
+    );
   }
 }
