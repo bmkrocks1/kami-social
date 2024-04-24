@@ -2,7 +2,11 @@ import { Directive, EventEmitter, Input, Output } from '@angular/core';
 
 export type SortColumn<T> = keyof T | '';
 export type SortDirection = 'asc' | 'desc' | '';
-const rotate: { [key: string]: SortDirection } = { asc: 'desc', desc: '', '': 'asc' };
+const rotate: { [key: string]: SortDirection } = {
+  asc: 'desc',
+  desc: '',
+  '': 'asc',
+};
 
 export interface SortEvent<T> {
   column: SortColumn<T>;

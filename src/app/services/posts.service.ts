@@ -6,27 +6,21 @@ import { Post } from '../types/post';
 import { debounceTime, delay, map, switchMap, tap } from 'rxjs/operators';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { HttpClient } from '@angular/common/http';
+import { State } from '../types/state';
+import { SearchResult } from '../types/search-result';
 
-interface SearchResult {
-  posts: Post[];
-  total: number;
-}
+const compare = (v1: string | number, v2: string | number) =>
+  v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
-interface State {
-  page: number;
-  pageSize: number;
-  searchTerm: string;
-  sortColumn: SortColumn<Post>;
-  sortDirection: SortDirection;
-}
-
-const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
-
-function sort(countries: Post[], column: SortColumn<Post>, direction: string): Post[] {
+function sort(
+  posts: Post[],
+  column: SortColumn<Post>,
+  direction: string
+): Post[] {
   if (direction === '' || column === '') {
-    return countries;
+    return posts;
   } else {
-    return [...countries].sort((a, b) => {
+    return [...posts].sort((a, b) => {
       const res = compare(a[column], b[column]);
       return direction === 'asc' ? res : -res;
     });
@@ -47,29 +41,33 @@ export class PostsService {
   private _posts$ = new BehaviorSubject<Post[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
-  private _state: State = {
+  private _state: State<Post> = {
     page: 1,
     pageSize: 10,
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
   };
+  private _state$ = new BehaviorSubject<State<Post>>(this._state);
 
   constructor(private http: HttpClient) {
     this._search$
       .pipe(
-        tap(() => this._loading$.next(true)),
         debounceTime(200),
+        tap(() => {
+          this._state$.next(this._state);
+          this._loading$.next(true);
+        }),
         switchMap(() => this._search()),
         delay(200),
-        tap(() => this._loading$.next(false))
+        tap(() => {
+          this._loading$.next(false);
+        })
       )
       .subscribe((result) => {
-        this._posts$.next(result.posts);
+        this._posts$.next(result.data);
         this._total$.next(result.total);
       });
-
-    this._search$.next();
   }
 
   get posts$() {
@@ -81,6 +79,9 @@ export class PostsService {
   get loading$() {
     return this._loading$.asObservable();
   }
+  get state$() {
+    return this._state$.asObservable();
+  }
   get page() {
     return this._state.page;
   }
@@ -91,6 +92,9 @@ export class PostsService {
     return this._state.searchTerm;
   }
 
+  set state(state: State<Post>) {
+    this._set(state);
+  }
   set page(page: number) {
     this._set({ page });
   }
@@ -107,22 +111,28 @@ export class PostsService {
     this._set({ sortDirection });
   }
 
-  private _set(patch: Partial<State>) {
+  private _set(patch: Partial<State<Post>>) {
     Object.assign(this._state, patch);
     this._search$.next();
   }
 
-  private _search(): Observable<SearchResult> {
-    const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
+  private _search(): Observable<SearchResult<Post>> {
+    const { sortColumn, sortDirection, pageSize, page, searchTerm } =
+      this._state;
 
-    return this.http.get<Post[]>('https://jsonplaceholder.typicode.com/posts').pipe(
-      map((posts) => {
-        const result = sort(posts, sortColumn, sortDirection)
-          .filter((post) => matches(post, searchTerm))
-          .slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-
-        return { posts: result, total: result.length };
-      })
-    );
+    return this.http
+      .get<Post[]>('https://jsonplaceholder.typicode.com/posts')
+      .pipe(
+        map((posts) => {
+          const filtered = posts.filter((post) => matches(post, searchTerm));
+          return {
+            data: sort(filtered, sortColumn, sortDirection).slice(
+              (page - 1) * pageSize,
+              (page - 1) * pageSize + pageSize
+            ),
+            total: filtered.length,
+          };
+        })
+      );
   }
 }
