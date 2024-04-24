@@ -1,0 +1,10 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'ks-album',
+  standalone: true,
+  imports: [],
+  templateUrl: './album.component.html',
+  styleUrl: './album.component.scss',
+})
+export class AlbumComponent {}
