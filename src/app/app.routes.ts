@@ -3,12 +3,14 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
+    title: 'KamiSocial - Dashboard',
     loadComponent: () =>
       import('./components/home/home.component').then((e) => e.HomeComponent),
   },
   {
     path: 'posts',
     data: { breadcrumb: 'Posts' },
+    title: 'KamiSocial - Posts',
     children: [
       {
         path: ':id',
@@ -31,6 +33,7 @@ export const routes: Routes = [
   {
     path: 'albums',
     data: { breadcrumb: 'Albums' },
+    title: 'KamiSocial - Albums',
     children: [
       {
         path: ':id',
@@ -53,6 +56,7 @@ export const routes: Routes = [
   {
     path: 'photos',
     data: { breadcrumb: 'Photos' },
+    title: 'KamiSocial - Photos',
     children: [
       {
         path: ':id',
@@ -74,6 +78,7 @@ export const routes: Routes = [
   },
   {
     path: 'user/:id',
+    title: 'KamiSocial - User',
     loadComponent: () =>
       import('./components/user/user.component').then((e) => e.UserComponent),
   },
