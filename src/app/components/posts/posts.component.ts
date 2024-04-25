@@ -10,7 +10,7 @@ import {
   NgbdSortableHeader,
   SortEvent,
 } from '../../directives/sortable.directive';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { State } from '../../types/state';
 
 @Component({
@@ -23,6 +23,7 @@ import { State } from '../../types/state';
     NgbHighlight,
     NgbdSortableHeader,
     NgbPaginationModule,
+    RouterLink,
   ],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.scss',

@@ -57,10 +57,27 @@
           Home
         </a>
       </li>
-      @for (breadcrumb of breadcrumbs; track breadcrumb.label) {
-        <li class="breadcrumb-item">
-          {{ breadcrumb.label }}
-        </li>
+      @for (
+        breadcrumb of breadcrumbs;
+        track breadcrumb.label;
+        let isLast = $last
+      ) {
+        @if (isLast) {
+          <li class="breadcrumb-item">
+            {{ breadcrumb.label }}
+          </li>
+        } @else {
+          <li class="breadcrumb-item">
+            <a
+              class="breadcrumb-item text-decoration-none"
+              [routerLink]="breadcrumb.url"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+            >
+              {{ breadcrumb.label }}
+            </a>
+          </li>
+        }
       }
     </ol>
   </nav>

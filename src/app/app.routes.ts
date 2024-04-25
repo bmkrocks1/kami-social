@@ -9,16 +9,26 @@ export const routes: Routes = [
   {
     path: 'posts',
     data: { breadcrumb: 'Posts' },
-    loadComponent: () =>
-      import('./components/posts/posts.component').then(
-        (e) => e.PostsComponent
-      ),
+    children: [
+      {
+        path: ':id',
+        data: { breadcrumb: ':id' },
+        loadComponent: () =>
+          import('./components/posts/post/post.component').then(
+            (e) => e.PostComponent
+          ),
+      },
+      {
+        path: '',
+        data: { breadcrumb: null },
+        loadComponent: () =>
+          import('./components/posts/posts.component').then(
+            (e) => e.PostsComponent
+          ),
+      },
+    ],
   },
-  {
-    path: 'posts/:id',
-    loadComponent: () =>
-      import('./components/post/post.component').then((e) => e.PostComponent),
-  },
+
   {
     path: 'albums',
     data: { breadcrumb: 'Albums' },

@@ -58,10 +58,17 @@ export class AppComponent {
         url += `/${routeURL}`;
       }
 
-      if (child.snapshot.data?.['breadcrumb']) {
+      let breadcrumbLabel: string = child.snapshot.data?.['breadcrumb'];
+
+      if (breadcrumbLabel) {
+        if (breadcrumbLabel.startsWith(':')) {
+          breadcrumbLabel =
+            child.snapshot.params[breadcrumbLabel.split(':')[1]];
+        }
+
         breadcrumbs.push({
-          label: child.snapshot.data['breadcrumb'],
-          url: url,
+          label: breadcrumbLabel,
+          url,
         });
       }
 

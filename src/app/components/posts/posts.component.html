@@ -49,10 +49,12 @@
               />
             </td>
             <td>
-              <ngb-highlight
-                [result]="post.title"
-                [term]="service.searchTerm"
-              />
+              <a [routerLink]="[post.id]">
+                <ngb-highlight
+                  [result]="post.title"
+                  [term]="service.searchTerm"
+                />
+              </a>
             </td>
             <td>
               <ngb-highlight [result]="post.body" [term]="service.searchTerm" />
