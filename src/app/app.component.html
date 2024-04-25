@@ -45,26 +45,26 @@
   </ul>
 </nav>
 <main class="main">
-  <div class="container">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb mt-3">
+  <nav aria-label="breadcrumb" class="position-fixed top-0 w-100 bg-white z-1">
+    <ol class="breadcrumb mt-3 px-3">
+      <li class="breadcrumb-item">
+        <a
+          class="breadcrumb-item text-decoration-none"
+          routerLink="/"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          Home
+        </a>
+      </li>
+      @for (breadcrumb of breadcrumbs; track breadcrumb.label) {
         <li class="breadcrumb-item">
-          <a
-            class="breadcrumb-item text-decoration-none"
-            routerLink="/"
-            routerLinkActive="active"
-            ariaCurrentWhenActive="page"
-          >
-            Home
-          </a>
+          {{ breadcrumb.label }}
         </li>
-        @for (breadcrumb of breadcrumbs; track breadcrumb.label) {
-          <li class="breadcrumb-item">
-            {{ breadcrumb.label }}
-          </li>
-        }
-      </ol>
-    </nav>
+      }
+    </ol>
+  </nav>
+  <div class="container">
     <router-outlet />
   </div>
 </main>
