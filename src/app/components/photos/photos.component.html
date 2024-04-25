@@ -1,7 +1,7 @@
 <h2>Photos</h2>
 
 <form>
-  <div class="mb-3 row">
+  <div class="mb-4 row">
     <div class="col-lg-5 col-xs-6">
       <input
         id="table-complete-search"
@@ -27,15 +27,15 @@
     <div class="row row-cols-6 row-gap-3">
       @for (photo of photos$ | async; track photo.id) {
         <div class="col">
-          <div class="card mb-3 h-100">
+          <div class="card mb-3">
             <img
               [src]="photo.thumbnailUrl"
               class="card-img-top"
               alt="photo thumbnail"
             />
-            <div class="card-body">
+            <div class="card-body rounded bg-light">
               <a
-                class="d-block card-text text-truncate"
+                class="d-block card-text text-truncate text-decoration-none"
                 [title]="photo.title"
                 [routerLink]="[photo.id]"
               >
@@ -50,7 +50,7 @@
       }
     </div>
 
-    <div class="d-flex justify-content-between p-2">
+    <div class="d-flex justify-content-between p-2 mt-4">
       <ngb-pagination
         [collectionSize]="(total$ | async)!"
         [(page)]="photosService.page"

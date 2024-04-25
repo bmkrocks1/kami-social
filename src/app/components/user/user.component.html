@@ -8,7 +8,7 @@
     </div>
   </div>
 } @else if (user) {
-  <div class="bg-primary p-5">
+  <div class="bg-secondary p-5">
     <h2 class="text-white">{{ user.name }}</h2>
     <div class="d-flex gap-3">
       <span class="text-white">{{ user.username }}</span>
@@ -17,7 +17,11 @@
       <span>|</span>
       <span class="text-white">{{ user.phone }}</span>
       <span>|</span>
-      <a class="text-white" href="https://{{ user.website }}" target="_blank">
+      <a
+        class="text-white text-decoration-none"
+        href="https://{{ user.website }}"
+        target="_blank"
+      >
         {{ user.website }}
       </a>
     </div>
@@ -31,7 +35,12 @@
             <ul class="list-group list-group-flush">
               @for (album of albums; track album.id) {
                 <li class="list-group-item text-start">
-                  <a [routerLink]="'/albums/' + album.id">{{ album.title }}</a>
+                  <a
+                    [routerLink]="'/albums/' + album.id"
+                    class="text-decoration-none"
+                  >
+                    {{ album.title }}
+                  </a>
                 </li>
               }
             </ul>
@@ -45,7 +54,12 @@
             <ul class="list-group list-group-flush">
               @for (post of posts; track post.id) {
                 <li class="list-group-item text-start">
-                  <a [routerLink]="'/posts/' + post.id">{{ post.title }}</a>
+                  <a
+                    [routerLink]="'/posts/' + post.id"
+                    class="text-decoration-none"
+                  >
+                    {{ post.title }}
+                  </a>
                 </li>
               }
             </ul>

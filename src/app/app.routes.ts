@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    title: 'KamiSocial - Dashboard',
+    title: 'KamiSocial - Home',
     loadComponent: () =>
       import('./components/home/home.component').then((e) => e.HomeComponent),
   },
@@ -84,6 +84,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
+    redirectTo: '',
     loadComponent: () =>
       import('./components/home/home.component').then((e) => e.HomeComponent),
   },

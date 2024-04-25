@@ -80,8 +80,6 @@ export class PhotosComponent {
         return params;
       }, {} as Params);
 
-      console.log('navigate:', queryParams);
-
       this.router.navigate([], {
         relativeTo: this.activatedRoute,
         queryParams,

@@ -1,0 +1,75 @@
+<div class="bg-secondary p-5">
+  <span class="text-white">Welcome to</span>
+  <h2 class="text-white">KamiSocial</h2>
+</div>
+<div class="px-5 py-3">
+  <div class="row">
+    <div class="col">
+      <div class="card text-center">
+        <div class="card-header text-start">Stats</div>
+        <div
+          class="card-body rounded p-3 d-flex justify-content-between align-items-center"
+        >
+          <div>
+            <strong class="fs-5 text-success mx-1">
+              {{ totalPosts$ | async | number }}
+            </strong>
+            <small class="text-body-tertiary">Posts</small>
+          </div>
+          |
+          <div>
+            <strong class="fs-5 text-success mx-1">
+              {{ totalAlbums$ | async | number }}
+            </strong>
+            <small class="text-body-tertiary">Albums</small>
+          </div>
+          |
+          <div>
+            <strong class="fs-5 text-success mx-1">
+              {{ totalPhotos$ | async | number }}
+            </strong>
+            <small class="text-body-tertiary">Photos</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card text-center">
+        <div class="card-header text-start">Top 10 Posts</div>
+        <div class="card-body rounded p-0">
+          <ul class="list-group list-group-flush list-group-numbered">
+            @for (post of posts$ | async; track post.id) {
+              <li class="list-group-item text-start">
+                <a
+                  [routerLink]="'/posts/' + post.id"
+                  class="text-decoration-none"
+                >
+                  {{ post.title }}
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card text-center">
+        <div class="card-header text-start">Top 10 Albums</div>
+        <div class="card-body rounded p-0">
+          <ul class="list-group list-group-flush list-group-numbered">
+            @for (album of albums$ | async; track album.id) {
+              <li class="list-group-item text-start">
+                <a
+                  [routerLink]="'/albums/' + album.id"
+                  class="text-decoration-none"
+                >
+                  {{ album.title }}
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

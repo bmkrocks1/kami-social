@@ -1,7 +1,7 @@
 <h2>Posts</h2>
 
 <form>
-  <div class="mb-3 row">
+  <div class="mb-4 row">
     <div class="col-lg-5 col-xs-6">
       <input
         id="table-complete-search"
@@ -13,39 +13,77 @@
       />
     </div>
   </div>
-
-  @if (service.loading$ | async) {
-    <div
-      class="d-flex justify-content-center align-items-center"
-      style="min-height: 300px"
-    >
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  } @else {
-    <table class="table table-bordered">
-      <thead>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th
+          class="bg-light"
+          width="5%"
+          scope="col"
+          sortable="id"
+          (sort)="onSort($event)"
+        >
+          ID
+        </th>
+        <th
+          class="bg-light"
+          width="8%"
+          scope="col"
+          sortable="userId"
+          (sort)="onSort($event)"
+        >
+          User
+        </th>
+        <th
+          class="bg-light"
+          width="37%"
+          scope="col"
+          sortable="title"
+          (sort)="onSort($event)"
+        >
+          Title
+        </th>
+        <th
+          class="bg-light"
+          width="60%"
+          scope="col"
+          sortable="body"
+          (sort)="onSort($event)"
+        >
+          Body
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @if (service.loading$ | async) {
         <tr>
-          <th scope="col" sortable="id" (sort)="onSort($event)">ID</th>
-          <th scope="col" sortable="userId" (sort)="onSort($event)">User</th>
-          <th scope="col" sortable="title" (sort)="onSort($event)">Title</th>
-          <th scope="col" sortable="body" (sort)="onSort($event)">Body</th>
+          <td colspan="4" style="text-align: center">
+            <div
+              class="d-flex justify-content-center align-items-center"
+              style="min-height: 300px"
+            >
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </td>
         </tr>
-      </thead>
-      <tbody>
+      } @else {
         @for (post of posts$ | async; track post.id) {
           <tr>
             <td>
               {{ post.id }}
             </td>
             <td>
-              <a [routerLink]="'/user/' + post.userId">
+              <a
+                [routerLink]="'/user/' + post.userId"
+                class="text-decoration-none"
+              >
                 {{ post.userId }}
               </a>
             </td>
             <td>
-              <a [routerLink]="[post.id]">
+              <a [routerLink]="[post.id]" class="text-decoration-none">
                 <ngb-highlight
                   [result]="post.title"
                   [term]="service.searchTerm"
@@ -61,28 +99,28 @@
             <td colspan="4" style="text-align: center">No posts found</td>
           </tr>
         }
-      </tbody>
-    </table>
+      }
+    </tbody>
+  </table>
 
-    <div class="d-flex justify-content-between p-2">
-      <ngb-pagination
-        [collectionSize]="(total$ | async)!"
-        [(page)]="service.page"
-        [pageSize]="service.pageSize"
-        [maxSize]="5"
-      ></ngb-pagination>
+  <div class="d-flex justify-content-between p-2 mt-4">
+    <ngb-pagination
+      [collectionSize]="(total$ | async)!"
+      [(page)]="service.page"
+      [pageSize]="service.pageSize"
+      [maxSize]="5"
+    ></ngb-pagination>
 
-      <select
-        class="form-select"
-        style="width: auto"
-        name="pageSize"
-        [(ngModel)]="service.pageSize"
-      >
-        <option [ngValue]="10">10</option>
-        <option [ngValue]="25">25</option>
-        <option [ngValue]="50">50</option>
-        <option [ngValue]="100">100</option>
-      </select>
-    </div>
-  }
+    <select
+      class="form-select"
+      style="width: auto"
+      name="pageSize"
+      [(ngModel)]="service.pageSize"
+    >
+      <option [ngValue]="10">10</option>
+      <option [ngValue]="25">25</option>
+      <option [ngValue]="50">50</option>
+      <option [ngValue]="100">100</option>
+    </select>
+  </div>
 </form>

@@ -1,7 +1,7 @@
 <h2>Albums</h2>
 
 <form>
-  <div class="mb-3 row">
+  <div class="mb-4 row">
     <div class="col-lg-5 col-xs-6">
       <input
         id="table-complete-search"
@@ -27,8 +27,8 @@
     <div class="row row-cols-4 row-gap-3">
       @for (album of albums$ | async; track album.id) {
         <div class="col">
-          <div class="card mb-3 h-100">
-            <div class="card-body bg-secondary-subtle">
+          <div class="card mb-3">
+            <div class="card-body rounded bg-light">
               <h5 class="card-title text-truncate mb-4" [title]="album.title">
                 {{ album.title }}
               </h5>
@@ -39,7 +39,7 @@
       }
     </div>
 
-    <div class="d-flex justify-content-between p-2">
+    <div class="d-flex justify-content-between p-2 mt-4">
       <ngb-pagination
         [collectionSize]="(total$ | async)!"
         [(page)]="service.page"
