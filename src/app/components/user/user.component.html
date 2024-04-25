@@ -1,1 +1,57 @@
-<p>user works!</p>
+@if (isLoading) {
+  <div
+    class="d-flex justify-content-center align-items-center"
+    style="min-height: 300px"
+  >
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+} @else if (user) {
+  <div class="bg-primary p-5">
+    <h2 class="text-white">{{ user.name }}</h2>
+    <div class="d-flex gap-3">
+      <span class="text-white">{{ user.username }}</span>
+      <span>|</span>
+      <span class="text-white">{{ user.email }}</span>
+      <span>|</span>
+      <span class="text-white">{{ user.phone }}</span>
+      <span>|</span>
+      <a class="text-white" href="https://{{ user.website }}" target="_blank">
+        {{ user.website }}
+      </a>
+    </div>
+  </div>
+  <div class="px-5 py-3">
+    <div class="row">
+      <div class="col">
+        <div class="card text-center">
+          <div class="card-header text-start">Albums</div>
+          <div class="card-body p-0 overflow-y-scroll" style="height: 400px">
+            <ul class="list-group list-group-flush">
+              @for (album of albums; track album.id) {
+                <li class="list-group-item text-start">
+                  <a [routerLink]="'/albums/' + album.id">{{ album.title }}</a>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card text-center">
+          <div class="card-header text-start">Posts</div>
+          <div class="card-body p-0 overflow-y-scroll" style="height: 400px">
+            <ul class="list-group list-group-flush">
+              @for (post of posts; track post.id) {
+                <li class="list-group-item text-start">
+                  <a [routerLink]="'/posts/' + post.id">{{ post.title }}</a>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

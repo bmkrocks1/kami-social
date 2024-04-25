@@ -37,16 +37,12 @@
         @for (post of posts$ | async; track post.id) {
           <tr>
             <td>
-              <ngb-highlight
-                [result]="post.id | number"
-                [term]="service.searchTerm"
-              />
+              {{ post.id }}
             </td>
             <td>
-              <ngb-highlight
-                [result]="post.userId | number"
-                [term]="service.searchTerm"
-              />
+              <a [routerLink]="'/user/' + post.userId">
+                {{ post.userId }}
+              </a>
             </td>
             <td>
               <a [routerLink]="[post.id]">

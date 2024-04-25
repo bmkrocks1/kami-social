@@ -45,43 +45,49 @@
   </ul>
 </nav>
 <main class="main">
-  <nav aria-label="breadcrumb" class="position-fixed top-0 w-100 bg-white z-1">
-    <ol class="breadcrumb mt-3 px-3">
-      <li class="breadcrumb-item">
-        <a
-          class="breadcrumb-item text-decoration-none"
-          routerLink="/"
-          routerLinkActive="active"
-          ariaCurrentWhenActive="page"
-        >
-          Home
-        </a>
-      </li>
-      @for (
-        breadcrumb of breadcrumbs;
-        track breadcrumb.label;
-        let isLast = $last
-      ) {
-        @if (isLast) {
-          <li class="breadcrumb-item">
-            {{ breadcrumb.label }}
-          </li>
-        } @else {
-          <li class="breadcrumb-item">
-            <a
-              class="breadcrumb-item text-decoration-none"
-              [routerLink]="breadcrumb.url"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-            >
+  @if (breadcrumbs.length > 0) {
+    <nav
+      aria-label="breadcrumb"
+      class="position-fixed top-0 w-100 bg-white z-1"
+    >
+      <ol class="breadcrumb mt-3 px-3">
+        <li class="breadcrumb-item">
+          <a
+            class="breadcrumb-item text-decoration-none"
+            routerLink="/"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+          >
+            Home
+          </a>
+        </li>
+        @for (
+          breadcrumb of breadcrumbs;
+          track breadcrumb.label;
+          let isLast = $last
+        ) {
+          @if (isLast) {
+            <li class="breadcrumb-item">
               {{ breadcrumb.label }}
-            </a>
-          </li>
+            </li>
+          } @else {
+            <li class="breadcrumb-item">
+              <a
+                class="breadcrumb-item text-decoration-none"
+                [routerLink]="breadcrumb.url"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+              >
+                {{ breadcrumb.label }}
+              </a>
+            </li>
+          }
         }
-      }
-    </ol>
-  </nav>
-  <div class="container">
+      </ol>
+    </nav>
+  }
+
+  <div class="container" [ngClass]="{ 'p-0': breadcrumbs.length === 0 }">
     <router-outlet />
   </div>
 </main>
