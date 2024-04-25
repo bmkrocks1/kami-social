@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-import { Post } from '../types/post';
+import { Album } from '../types/album';
 import { debounceTime, delay, map, switchMap, tap } from 'rxjs/operators';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { HttpClient } from '@angular/common/http';
@@ -13,42 +13,39 @@ const compare = (v1: string | number, v2: string | number) =>
   v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
 function sort(
-  posts: Post[],
-  column: SortColumn<Post>,
+  albums: Album[],
+  column: SortColumn<Album>,
   direction: string
-): Post[] {
+): Album[] {
   if (direction === '' || column === '') {
-    return posts;
+    return albums;
   } else {
-    return [...posts].sort((a, b) => {
+    return [...albums].sort((a, b) => {
       const res = compare(a[column], b[column]);
       return direction === 'asc' ? res : -res;
     });
   }
 }
 
-function matches(post: Post, term: string) {
-  return (
-    post.title.toLowerCase().includes(term.toLowerCase()) ||
-    post.body.toLowerCase().includes(term.toLowerCase())
-  );
+function matches(album: Album, term: string) {
+  return album.title.toLowerCase().includes(term.toLowerCase());
 }
 
 @Injectable()
-export class PostsService {
+export class AlbumsService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _posts$ = new BehaviorSubject<Post[]>([]);
+  private _albums$ = new BehaviorSubject<Album[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
-  private _state: State<Post> = {
+  private _state: State<Album> = {
     page: 1,
-    pageSize: 10,
+    pageSize: 12,
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
   };
-  private _state$ = new BehaviorSubject<State<Post>>(this._state);
+  private _state$ = new BehaviorSubject<State<Album>>(this._state);
 
   constructor(private http: HttpClient) {
     this._search$
@@ -65,13 +62,13 @@ export class PostsService {
         })
       )
       .subscribe((result) => {
-        this._posts$.next(result.data);
+        this._albums$.next(result.data);
         this._total$.next(result.total);
       });
   }
 
-  get posts$() {
-    return this._posts$.asObservable();
+  get albums$() {
+    return this._albums$.asObservable();
   }
   get total$() {
     return this._total$.asObservable();
@@ -92,7 +89,7 @@ export class PostsService {
     return this._state.searchTerm;
   }
 
-  set state(state: State<Post>) {
+  set state(state: State<Album>) {
     this._set(state);
   }
   set page(page: number) {
@@ -104,29 +101,29 @@ export class PostsService {
   set searchTerm(searchTerm: string) {
     this._set({ searchTerm });
   }
-  set sortColumn(sortColumn: SortColumn<Post>) {
+  set sortColumn(sortColumn: SortColumn<Album>) {
     this._set({ sortColumn });
   }
   set sortDirection(sortDirection: SortDirection) {
     this._set({ sortDirection });
   }
 
-  private _set(patch: Partial<State<Post>>) {
+  private _set(patch: Partial<State<Album>>) {
     Object.assign(this._state, patch);
     this._search$.next();
   }
 
-  private _search(): Observable<SearchResult<Post>> {
+  private _search(): Observable<SearchResult<Album>> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } =
       this._state;
 
     return this.http
-      .get<Post[]>('https://jsonplaceholder.typicode.com/posts')
+      .get<Album[]>('https://jsonplaceholder.typicode.com/albums')
       .pipe(
-        map((posts) => {
-          const filtered = posts.filter((post) => matches(post, searchTerm));
+        map((albums) => {
+          const filtered = albums.filter((album) => matches(album, searchTerm));
           return {
-            data: sort(filtered, sortColumn, sortDirection).slice(
+            data: filtered.slice(
               (page - 1) * pageSize,
               (page - 1) * pageSize + pageSize
             ),

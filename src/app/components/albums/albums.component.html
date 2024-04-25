@@ -1,1 +1,66 @@
-<p>albums works!</p>
+<h2>Albums</h2>
+
+<form>
+  <div class="mb-3 row">
+    <div class="col-lg-5 col-xs-3 col-sm-auto">
+      <input
+        id="table-complete-search"
+        type="text"
+        class="form-control"
+        name="searchTerm"
+        placeholder="Search text"
+        [(ngModel)]="service.searchTerm"
+      />
+    </div>
+  </div>
+
+  @if (service.loading$ | async) {
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="min-height: 300px"
+    >
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else {
+    <div class="row row-cols-4 row-gap-3">
+      @for (album of albums$ | async; track album.id) {
+        <div class="col">
+          <div class="card mb-3 h-100">
+            <div class="card-body bg-secondary-subtle">
+              <h5 class="card-title text-truncate mb-4" [title]="album.title">
+                {{ album.title }}
+              </h5>
+              <a [routerLink]="[album.id]" class="btn btn-primary">
+                Go to album
+              </a>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination
+        [collectionSize]="(total$ | async)!"
+        [(page)]="service.page"
+        [pageSize]="service.pageSize"
+        [maxSize]="5"
+      ></ngb-pagination>
+
+      <select
+        class="form-select"
+        style="width: auto"
+        name="pageSize"
+        [(ngModel)]="service.pageSize"
+      >
+        <option [ngValue]="12">12</option>
+        <option [ngValue]="24">24</option>
+        <option [ngValue]="48">48</option>
+        <option [ngValue]="72">72</option>
+        <option [ngValue]="96">96</option>
+      </select>
+    </div>
+  }
+</form>

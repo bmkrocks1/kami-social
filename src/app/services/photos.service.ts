@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-import { Post } from '../types/post';
+import { Photo } from '../types/photo';
 import { debounceTime, delay, map, switchMap, tap } from 'rxjs/operators';
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 import { HttpClient } from '@angular/common/http';
@@ -13,42 +13,41 @@ const compare = (v1: string | number, v2: string | number) =>
   v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
 function sort(
-  posts: Post[],
-  column: SortColumn<Post>,
+  photos: Photo[],
+  column: SortColumn<Photo>,
   direction: string
-): Post[] {
+): Photo[] {
   if (direction === '' || column === '') {
-    return posts;
+    return photos;
   } else {
-    return [...posts].sort((a, b) => {
+    return [...photos].sort((a, b) => {
       const res = compare(a[column], b[column]);
       return direction === 'asc' ? res : -res;
     });
   }
 }
 
-function matches(post: Post, term: string) {
-  return (
-    post.title.toLowerCase().includes(term.toLowerCase()) ||
-    post.body.toLowerCase().includes(term.toLowerCase())
-  );
+function matches(photo: Photo, term: string) {
+  return photo.title.toLowerCase().includes(term.toLowerCase());
 }
 
 @Injectable()
-export class PostsService {
+export class PhotosService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _posts$ = new BehaviorSubject<Post[]>([]);
+  private _photos$ = new BehaviorSubject<Photo[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
-  private _state: State<Post> = {
+  private _state: State<Photo> = {
     page: 1,
-    pageSize: 10,
+    pageSize: 12,
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
   };
-  private _state$ = new BehaviorSubject<State<Post>>(this._state);
+  private _state$ = new BehaviorSubject<State<Photo>>(this._state);
+
+  public albumId: number | null = null;
 
   constructor(private http: HttpClient) {
     this._search$
@@ -65,13 +64,13 @@ export class PostsService {
         })
       )
       .subscribe((result) => {
-        this._posts$.next(result.data);
+        this._photos$.next(result.data);
         this._total$.next(result.total);
       });
   }
 
-  get posts$() {
-    return this._posts$.asObservable();
+  get photos$() {
+    return this._photos$.asObservable();
   }
   get total$() {
     return this._total$.asObservable();
@@ -92,7 +91,7 @@ export class PostsService {
     return this._state.searchTerm;
   }
 
-  set state(state: State<Post>) {
+  set state(state: State<Photo>) {
     this._set(state);
   }
   set page(page: number) {
@@ -104,35 +103,35 @@ export class PostsService {
   set searchTerm(searchTerm: string) {
     this._set({ searchTerm });
   }
-  set sortColumn(sortColumn: SortColumn<Post>) {
+  set sortColumn(sortColumn: SortColumn<Photo>) {
     this._set({ sortColumn });
   }
   set sortDirection(sortDirection: SortDirection) {
     this._set({ sortDirection });
   }
 
-  private _set(patch: Partial<State<Post>>) {
+  private _set(patch: Partial<State<Photo>>) {
     Object.assign(this._state, patch);
     this._search$.next();
   }
 
-  private _search(): Observable<SearchResult<Post>> {
+  private _search(): Observable<SearchResult<Photo>> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } =
       this._state;
 
-    return this.http
-      .get<Post[]>('https://jsonplaceholder.typicode.com/posts')
-      .pipe(
-        map((posts) => {
-          const filtered = posts.filter((post) => matches(post, searchTerm));
-          return {
-            data: sort(filtered, sortColumn, sortDirection).slice(
-              (page - 1) * pageSize,
-              (page - 1) * pageSize + pageSize
-            ),
-            total: filtered.length,
-          };
-        })
-      );
+    const url = `https://jsonplaceholder.typicode.com${this.albumId ? `/albums/${this.albumId}/` : '/'}photos`;
+
+    return this.http.get<Photo[]>(url).pipe(
+      map((photos) => {
+        const filtered = photos.filter((photo) => matches(photo, searchTerm));
+        return {
+          data: sort(filtered, sortColumn, sortDirection).slice(
+            (page - 1) * pageSize,
+            (page - 1) * pageSize + pageSize
+          ),
+          total: filtered.length,
+        };
+      })
+    );
   }
 }

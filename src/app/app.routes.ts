@@ -36,16 +36,17 @@ export const routes: Routes = [
         path: ':id',
         data: { breadcrumb: ':id' },
         loadComponent: () =>
-          import('./components/albums/albums.component').then(
-            (e) => e.AlbumsComponent
+          import('./components/albums/album/album.component').then(
+            (e) => e.AlbumComponent
           ),
       },
       {
         path: '',
         data: { breadcrumb: null },
+
         loadComponent: () =>
-          import('./components/albums/album/album.component').then(
-            (e) => e.AlbumComponent
+          import('./components/albums/albums.component').then(
+            (e) => e.AlbumsComponent
           ),
       },
     ],
