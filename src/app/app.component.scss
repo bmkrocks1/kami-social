@@ -2,28 +2,62 @@
 @import 'bootstrap/scss/variables';
 @import 'bootstrap/scss/mixins/breakpoints';
 
-.side-nav {
-  background: #f6f6f6;
-  .nav {
-    gap: 5px;
+$navbar-width: 250px;
+$breadcrumb-container-height: 56px;
+
+.navbar-brand {
+  margin: 0;
+  padding: 14px 8px;
+}
+
+.navbar-nav {
+  gap: 3px;
+  .nav-link {
+    padding: 8px;
+
+    &.active,
+    &.show {
+      color: #fff;
+    }
+
+    &:hover:not(.active) {
+      background: #e2e3e5;
+    }
   }
 }
 
-@include media-breakpoint-up(lg) {
-  .side-nav {
+@include media-breakpoint-up(md) {
+  .navbar {
     position: fixed;
     bottom: 0;
     top: 0;
     left: 0;
-    width: 280px;
+    width: $navbar-width;
     height: 100vh;
+
+    .container-fluid {
+      height: 100vh;
+      align-items: flex-start;
+    }
+  }
+
+  .navbar-collapse,
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
   }
 
   .main {
-    padding-left: 280px;
-  }
+    padding-left: $navbar-width;
 
-  .container {
-    padding-top: 56px;
+    nav {
+      height: $breadcrumb-container-height;
+      position: fixed;
+      top: 0;
+    }
+
+    .content {
+      padding-top: $breadcrumb-container-height;
+    }
   }
 }

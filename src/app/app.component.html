@@ -1,55 +1,72 @@
-<nav class="side-nav p-3">
-  <h1 class="fs-5 px-3">KamiSocial</h1>
-  <ul class="nav nav-pills flex-column">
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        routerLink="/"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        ariaCurrentWhenActive="page"
-      >
-        Dashboard
-      </a>
-    </li>
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        routerLink="/posts"
-        routerLinkActive="active"
-        ariaCurrentWhenActive="page"
-      >
-        Posts
-      </a>
-    </li>
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        routerLink="/albums"
-        routerLinkActive="active"
-        ariaCurrentWhenActive="page"
-      >
-        Albums
-      </a>
-    </li>
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        routerLink="/photos"
-        routerLinkActive="active"
-        ariaCurrentWhenActive="page"
-      >
-        Photos
-      </a>
-    </li>
-  </ul>
+<nav class="navbar navbar-expand-md bg-body-tertiary">
+  <div class="container-fluid">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      (click)="toggleCollapsed()"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse"
+      id="navbarSupportedContent"
+      [ngClass]="{ collapse: collapsed, 'navbar-collapse': true }"
+    >
+      <h1 class="navbar-brand w-100">KamiSocial</h1>
+      <ul class="navbar-nav nav-pills">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            ariaCurrentWhenActive="page"
+          >
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/posts"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+          >
+            Posts
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/albums"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+          >
+            Albums
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/photos"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+          >
+            Photos
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
 <main class="main">
   @if (breadcrumbs.length > 0) {
-    <nav
-      aria-label="breadcrumb"
-      class="position-fixed top-0 w-100 bg-white z-1"
-    >
+    <nav aria-label="breadcrumb" class="w-100 bg-white z-1">
       <ol class="breadcrumb mt-3 px-3">
         <li class="breadcrumb-item">
           <a
@@ -87,7 +104,10 @@
     </nav>
   }
 
-  <div class="container" [ngClass]="{ 'p-0': breadcrumbs.length === 0 }">
+  <div
+    class="container-fluid content"
+    [ngClass]="{ 'p-0': breadcrumbs.length === 0 }"
+  >
     <router-outlet />
   </div>
 </main>

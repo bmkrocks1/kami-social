@@ -25,6 +25,7 @@ import { filter } from 'rxjs';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
+  collapsed = true;
   breadcrumbs: Array<{ label: string; url: string }> = [];
 
   constructor(
@@ -36,6 +37,10 @@ export class AppComponent {
       .subscribe(() => {
         this.breadcrumbs = this.createBreadcrumbs(this.activatedRoute.root);
       });
+  }
+
+  toggleCollapsed(): void {
+    this.collapsed = !this.collapsed;
   }
 
   private createBreadcrumbs(
