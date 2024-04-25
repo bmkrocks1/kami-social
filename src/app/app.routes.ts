@@ -28,7 +28,6 @@ export const routes: Routes = [
       },
     ],
   },
-
   {
     path: 'albums',
     data: { breadcrumb: 'Albums' },
@@ -45,7 +44,7 @@ export const routes: Routes = [
         path: '',
         data: { breadcrumb: null },
         loadComponent: () =>
-          import('./components/album/album.component').then(
+          import('./components/albums/album/album.component').then(
             (e) => e.AlbumComponent
           ),
       },
