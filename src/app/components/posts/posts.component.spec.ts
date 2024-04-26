@@ -1,22 +1,54 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { render, screen } from '@testing-library/angular';
 import { PostsComponent } from './posts.component';
+import { PostsService } from '../../services/posts.service';
+import { HttpClientModule } from '@angular/common/http';
+import { Post } from '../../types/post';
+import { of } from 'rxjs';
+
+const MOCK_POSTS: Post[] = [
+  {
+    userId: 1,
+    id: 1,
+    title: 'foo',
+    body: 'foo',
+  },
+  {
+    userId: 2,
+    id: 2,
+    title: 'bar',
+    body: 'bar',
+  },
+];
+
+const postsSpy = jest
+  .spyOn(PostsService.prototype, 'posts$', 'get')
+  .mockReturnValue(of(MOCK_POSTS));
+
+const totalSpy = jest
+  .spyOn(PostsService.prototype, 'total$', 'get')
+  .mockReturnValue(of(MOCK_POSTS.length));
+
+const loadingSpy = jest
+  .spyOn(PostsService.prototype, 'loading$', 'get')
+  .mockReturnValue(of(false));
 
 describe('PostsComponent', () => {
-  let component: PostsComponent;
-  let fixture: ComponentFixture<PostsComponent>;
+  test('should render posts', async () => {
+    const result = await render(PostsComponent, {
+      imports: [HttpClientModule],
+    });
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PostsComponent],
-    }).compileComponents();
+    expect(postsSpy).toHaveBeenCalled();
+    expect(totalSpy).toHaveBeenCalled();
+    expect(loadingSpy).toHaveBeenCalled();
 
-    fixture = TestBed.createComponent(PostsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    const table: HTMLTableElement = screen.getByTestId('posts-table');
+    expect(table).toBeInTheDocument();
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    const rows: HTMLTableRowElement[] =
+      screen.queryAllByTestId('posts-table-row');
+    expect(rows.length).toBe(MOCK_POSTS.length);
+
+    expect(result.container).toMatchSnapshot();
   });
 });

@@ -1,0 +1,255 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PostsComponent should render posts 1`] = `
+<div
+  id="root0"
+>
+  <h2>
+    Posts
+  </h2>
+  <form
+    class="ng-untouched ng-pristine ng-valid"
+    novalidate=""
+  >
+    <div
+      class="mb-4 row"
+    >
+      <div
+        class="col-lg-5 col-xs-6"
+      >
+        <input
+          class="form-control ng-untouched ng-pristine ng-valid"
+          id="table-complete-search"
+          name="searchTerm"
+          placeholder="Search text"
+          type="text"
+        />
+      </div>
+    </div>
+    <table
+      class="table table-bordered"
+      data-testid="posts-table"
+    >
+      <thead>
+        <tr>
+          <th
+            class="bg-light"
+            scope="col"
+            sortable="id"
+            width="5%"
+          >
+             ID 
+          </th>
+          <th
+            class="bg-light"
+            scope="col"
+            sortable="userId"
+            width="8%"
+          >
+             User 
+          </th>
+          <th
+            class="bg-light"
+            scope="col"
+            sortable="title"
+            width="37%"
+          >
+             Title 
+          </th>
+          <th
+            class="bg-light"
+            scope="col"
+            sortable="body"
+            width="60%"
+          >
+             Body 
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          data-testid="posts-table-row"
+        >
+          <td>
+             1 
+          </td>
+          <td>
+            <a
+              class="text-decoration-none"
+              href="/user/1"
+            >
+               1 
+            </a>
+          </td>
+          <td>
+            <a
+              class="text-decoration-none"
+              href="/1"
+            >
+              <ngb-highlight>
+                foo
+                
+                
+                
+                
+              </ngb-highlight>
+            </a>
+          </td>
+          <td>
+            <ngb-highlight>
+              foo
+              
+              
+              
+              
+            </ngb-highlight>
+          </td>
+        </tr>
+        <tr
+          data-testid="posts-table-row"
+        >
+          <td>
+             2 
+          </td>
+          <td>
+            <a
+              class="text-decoration-none"
+              href="/user/2"
+            >
+               2 
+            </a>
+          </td>
+          <td>
+            <a
+              class="text-decoration-none"
+              href="/2"
+            >
+              <ngb-highlight>
+                bar
+                
+                
+                
+                
+              </ngb-highlight>
+            </a>
+          </td>
+          <td>
+            <ngb-highlight>
+              bar
+              
+              
+              
+              
+            </ngb-highlight>
+          </td>
+        </tr>
+        
+        
+        
+        
+      </tbody>
+    </table>
+    <div
+      class="d-flex justify-content-between p-2 mt-4"
+    >
+      <ngb-pagination
+        role="navigation"
+      >
+        
+        
+        
+        
+        
+        
+        
+        <ul
+          class="pagination"
+        >
+          
+          <li
+            class="page-item disabled"
+          >
+            <a
+              aria-disabled="true"
+              aria-label="Previous"
+              class="page-link"
+              href=""
+              tabindex="-1"
+            >
+              <span
+                aria-hidden="true"
+              >
+                «
+              </span>
+              
+            </a>
+          </li>
+          
+          <li
+            aria-current="page"
+            class="page-item active"
+          >
+            <a
+              class="page-link"
+              href=""
+            >
+              1
+              
+            </a>
+            
+            
+          </li>
+          
+          
+          <li
+            class="page-item disabled"
+          >
+            <a
+              aria-disabled="true"
+              aria-label="Next"
+              class="page-link"
+              href=""
+              tabindex="-1"
+            >
+              <span
+                aria-hidden="true"
+              >
+                »
+              </span>
+              
+            </a>
+          </li>
+          
+          
+        </ul>
+      </ngb-pagination>
+      <select
+        class="form-select ng-untouched ng-pristine ng-valid"
+        name="pageSize"
+        style="width: auto;"
+      >
+        <option
+          value="0: 10"
+        >
+          10
+        </option>
+        <option
+          value="1: 25"
+        >
+          25
+        </option>
+        <option
+          value="2: 50"
+        >
+          50
+        </option>
+        <option
+          value="3: 100"
+        >
+          100
+        </option>
+      </select>
+    </div>
+  </form>
+</div>
+`;

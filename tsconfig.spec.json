@@ -2,11 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "types": [
-      "jest" // 1
-    ],
-    "esModuleInterop": true, // 2
-    "emitDecoratorMetadata": true // 3
+    "types": ["jest", "@testing-library/jest-dom"],
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }
