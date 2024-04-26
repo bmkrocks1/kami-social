@@ -61,8 +61,8 @@ export class AlbumsComponent implements OnInit {
 
     this.service.state$.subscribe((state) => {
       const queryParams: Params = (
-        Object.entries(state) as [keyof State, any][]
-      ).reduce((params, [key, value]: [keyof State, any]) => {
+        Object.entries(state) as [keyof State, string | number][]
+      ).reduce((params, [key, value]: [keyof State, string | number]) => {
         if (
           (key === 'page' && value === 1) ||
           (key === 'pageSize' && value === 12) ||

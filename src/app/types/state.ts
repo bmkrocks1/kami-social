@@ -1,6 +1,6 @@
 import { SortColumn, SortDirection } from '../directives/sortable.directive';
 
-export interface State<T = any> {
+export interface State<T = unknown> {
   page: number;
   pageSize: number;
   searchTerm: string;

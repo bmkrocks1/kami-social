@@ -9,24 +9,6 @@ import { HttpClient } from '@angular/common/http';
 import { State } from '../types/state';
 import { SearchResult } from '../types/search-result';
 
-const compare = (v1: string | number, v2: string | number) =>
-  v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
-
-function sort(
-  albums: Album[],
-  column: SortColumn<Album>,
-  direction: string
-): Album[] {
-  if (direction === '' || column === '') {
-    return albums;
-  } else {
-    return [...albums].sort((a, b) => {
-      const res = compare(a[column], b[column]);
-      return direction === 'asc' ? res : -res;
-    });
-  }
-}
-
 function matches(album: Album, term: string) {
   return album.title.toLowerCase().includes(term.toLowerCase());
 }
@@ -114,8 +96,7 @@ export class AlbumsService {
   }
 
   private _search(): Observable<SearchResult<Album>> {
-    const { sortColumn, sortDirection, pageSize, page, searchTerm } =
-      this._state;
+    const { pageSize, page, searchTerm } = this._state;
 
     return this.http
       .get<Album[]>('https://jsonplaceholder.typicode.com/albums')
